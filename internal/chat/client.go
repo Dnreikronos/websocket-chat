@@ -25,7 +25,9 @@ func (c *Client) Read(manager *Manager) {
 
 func (c *Client) Write() {
 	defer c.Socket.Close()
-	for msg := range c.Send() {
-		c.Socket.WriteJSON(msg)
+	for msg := range c.Send {
+		if err := c.Socket.WriteJSON(msg); err != nil {
+			break
+		}
 	}
 }
